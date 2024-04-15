@@ -19,8 +19,8 @@ export class Service {
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
-        // slug
-        ID.unique(),
+        slug
+        // ID.unique(),
         {
           title,
           content,
@@ -31,6 +31,51 @@ export class Service {
       );
     } catch (error) {
       console.log("appwrite serive ::createPost:: error", error);
+    }
+  }
+  // to update post--
+  async updatePost(slug, { title, content, featuredImage, status }) {
+    try {
+      return await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        slug,
+        {
+          title,
+          content,
+          featuredImage,
+          status,
+        }
+      );
+    } catch (e) {
+      console.log("appwrite error is::", e);
+    }
+  }
+  // to delete post--
+  async deletePost(slug) {
+    try {
+      await this.databases.deleteDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        slug
+      );
+      return true;
+    } catch (e) {
+      console.log("Appwrite serive :: deletePost :: error", e);
+      return false;
+    }
+  }
+  // to get post--
+  async getPost(slug){
+    try{
+        return await this.databases.getDocument(
+          conf.appwriteDatabaseId,
+          conf.appwriteCollectionId,
+          slug
+        )
+    }catch(e){
+      console.log("Appwrite serive :: deletePost :: error", e);
+      return false
     }
   }
 }
