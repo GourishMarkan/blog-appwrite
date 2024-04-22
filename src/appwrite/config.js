@@ -74,7 +74,7 @@ export class Service {
         slug
       );
     } catch (e) {
-      console.log("Appwrite serive :: deletePost :: error", e);
+      console.log("Appwrite serive :: getPost :: error", e);
       return false;
     }
   }

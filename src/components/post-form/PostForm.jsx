@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input, RTE, Select } from "..";
@@ -20,6 +21,7 @@ export default function PostForm({ post }) {
   const userData = useSelector((state) => state.auth.userData);
 
   const submit = async (data) => {
+    // post is there than--
     if (post) {
       const file = data.image[0]
         ? await appwriteService.uploadFile(data.image[0])
@@ -37,7 +39,9 @@ export default function PostForm({ post }) {
       if (dbPost) {
         navigate(`/post/${dbPost.$id}`);
       }
-    } else {
+    }
+    // post is not there---
+    else {
       const file = await appwriteService.uploadFile(data.image[0]);
 
       if (file) {
@@ -79,12 +83,14 @@ export default function PostForm({ post }) {
   return (
     <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
       <div className="w-2/3 px-2">
+        {/* Title Input */}
         <Input
           label="Title :"
           placeholder="Title"
           className="mb-4"
           {...register("title", { required: true })}
         />
+        {/* Slug Input */}
         <Input
           label="Slug :"
           placeholder="Slug"
@@ -96,6 +102,7 @@ export default function PostForm({ post }) {
             });
           }}
         />
+        {/* Content Real Time Editor */}
         <RTE
           label="Content :"
           name="content"
@@ -103,7 +110,10 @@ export default function PostForm({ post }) {
           defaultValue={getValues("content")}
         />
       </div>
+
       <div className="w-1/3 px-2">
+        {/* Featured Image Input */}
+
         <Input
           label="Featured Image :"
           type="file"
@@ -111,6 +121,7 @@ export default function PostForm({ post }) {
           accept="image/png, image/jpg, image/jpeg, image/gif"
           {...register("image", { required: !post })}
         />
+        {/* Display Current Featured Image if Editing */}
         {post && (
           <div className="w-full mb-4">
             <img
@@ -120,12 +131,14 @@ export default function PostForm({ post }) {
             />
           </div>
         )}
+        {/* Status Select Input */}
         <Select
           options={["active", "inactive"]}
           label="Status"
           className="mb-4"
           {...register("status", { required: true })}
         />
+        {/* Submit Button */}
         <Button
           type="submit"
           bgColor={post ? "bg-green-500" : undefined}
