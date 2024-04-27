@@ -1,18 +1,18 @@
-/* eslint-disable no-useless-catch */
-import conf from "../conf/conf";
-
+import conf from "../conf/conf.js";
 import { Client, Account, ID } from "appwrite";
+
 export class AuthService {
   client = new Client();
   account;
+
   constructor() {
     this.client
       .setEndpoint(conf.appwriteUrl)
       .setProject(conf.appwriteProjectId);
     this.account = new Account(this.client);
   }
+
   async createAccount({ email, password, name }) {
-    // eslint-disable-next-line no-useless-catch
     try {
       const userAccount = await this.account.create(
         ID.unique(),
@@ -27,24 +27,30 @@ export class AuthService {
         return userAccount;
       }
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
+
   async login({ email, password }) {
     try {
-      return await this.account.createEmailSession(email, password);
-    } catch (e) {
-      throw e;
+      return await this.account.createEmailPasswordSession(email, password);
+    } catch (error) {
+      console.log("login error is :", error);
+      throw error;
     }
   }
+
   async getCurrentUser() {
     try {
       return await this.account.get();
-    } catch (e) {
-      console.log("appwrite service:", e);
+    } catch (error) {
+      console.log("Appwrite serive :: getCurrentUser :: error", error);
     }
+
     return null;
   }
+
   async logout() {
     try {
       await this.account.deleteSessions();
@@ -53,6 +59,7 @@ export class AuthService {
     }
   }
 }
+
 const authService = new AuthService();
 
 export default authService;

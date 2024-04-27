@@ -1,8 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import authService from "../appwrite/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../store/authSlice";
-import { Button, Input, Logo } from "./index";
+import { Button, Input, Logo } from "./index.js";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
@@ -25,6 +25,7 @@ function Signup() {
       setError(error.message);
     }
   };
+
   return (
     <div className="flex items-center justify-center">
       <div
@@ -48,51 +49,39 @@ function Signup() {
           </Link>
         </p>
         {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
+
         <form onSubmit={handleSubmit(create)}>
           <div className="space-y-5">
             <Input
-              label="Full Name:"
-              type="text"
-              placeholder="Enter your full name "
+              label="Full Name: "
+              placeholder="Enter your full name"
               {...register("name", {
                 required: true,
-                validate: {
-                  matchPatern: (value) =>
-                    /^[a-zA-Z][a-zA-Z0-9_-]{2,19}$/.test(value) ||
-                    "username must be valid",
-                },
               })}
             />
             <Input
-              label="Email"
-              type="Email"
+              label="Email: "
               placeholder="Enter your email"
+              type="email"
               {...register("email", {
                 required: true,
                 validate: {
                   matchPatern: (value) =>
                     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-                    "Email must be valid ",
+                    "Email address must be a valid address",
                 },
               })}
             />
-
             <Input
-              label="Password:"
+              label="Password: "
               type="password"
               placeholder="Enter your password"
               {...register("password", {
                 required: true,
-                validate: {
-                  matchPatern: (value) =>
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\S]{8,}$/.test(
-                      value
-                    ) || "Password must be a valid",
-                },
               })}
             />
             <Button type="submit" className="w-full">
-              Sign in
+              Create Account
             </Button>
           </div>
         </form>

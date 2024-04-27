@@ -1,26 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, PostCard } from "../components";
-import appwriteServices from "../appwrite/config";
+import appwriteService from "../appwrite/config";
 function AllPost() {
   const [posts, setPost] = React.useState([]);
-  React.useEffect(() => {
-    // function to fetch post --
-    const fetchPosts = async () => {
-      try {
-        const fetchedPosts = await appwriteServices.getPosts([]);
-        if (fetchPosts) setPost(fetchedPosts.documents);
-      } catch (e) {
-        console.log("error while loading post ", e);
-      }
-    };
-    // Call the fetchPosts function
-    fetchPosts();
-  }, []); // Empty dependency array to ensure this effect runs only once when the component mounts
-  //   appwriteService.getPosts([]).then((posts) => {
-  //     if (posts) {
-  //         setPosts(posts.documents)
+  useEffect(() => {
+    appwriteService
+      .getPosts([])
+      .then((posts) => {
+        if (posts) {
+          setPost(posts.documents);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  }, []);
+  // React.useEffect(() => {
+  //   // function to fetch post --
+  //   const fetchPosts = async () => {
+  //     try {
+  //       const fetchedPosts = await appwriteServices.getPosts([]);
+  //       if (fetchPosts) setPost(fetchedPosts.documents);
+  //     } catch (e) {
+  //       console.log("error while loading post ", e);
   //     }
-  // })
+  //   };
+  //   // Call the fetchPosts function
+  //   fetchPosts();
+  // }, []); // Empty dependency array to ensure this effect runs only once when the component mounts
+  // appwriteService.getPosts([]).then((posts) => {
+  //   if (posts) {
+  //     setPosts(posts.documents);
+  //   }
+  // });
   return (
     <div className="w-full py-8">
       <Container>

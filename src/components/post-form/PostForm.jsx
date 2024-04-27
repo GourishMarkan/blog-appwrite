@@ -19,7 +19,7 @@ export default function PostForm({ post }) {
 
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
-
+  console.log(`in PostForm`, userData);
   const submit = async (data) => {
     // post is there than--
     if (post) {
@@ -47,10 +47,19 @@ export default function PostForm({ post }) {
       if (file) {
         const fileId = file.$id;
         data.featuredImage = fileId;
+        const userId = userData.userData.$id;
+        console.log("userid $ one is", userData.$id);
+        console.log("userid before dbpost is:", userId);
         const dbPost = await appwriteService.createPost({
           ...data,
-          userId: userData.$id,
+          userId: userId,
         });
+        console.log(data);
+        console.log(userData);
+        console.log("id of user data below-");
+        console.log(userData.userData.$id);
+        console.log("in post form user data:", userData);
+        console.log("db psot is:", dbPost);
 
         if (dbPost) {
           navigate(`/post/${dbPost.$id}`);

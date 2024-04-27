@@ -14,17 +14,25 @@ export class Service {
     this.bucket = new Storage(this.client);
   }
   // to create post --i using id.unique instead of slug
-  async createPost({ title, slug, content, featuredImage, status, userId }) {
+  async createPost({
+    title,
+    slug,
+    content,
+    featuredImage,
+    status,
+    author,
+    authorName,
+    userId,
+  }) {
     try {
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug,
-        // ID.unique(),
         {
           title,
           content,
-          featuredImage,
+          featuredImage, //Here featuredImage is actully an ID of a image stored in a database
           status,
           userId,
         }
@@ -91,6 +99,7 @@ export class Service {
       return false;
     }
   }
+
   // file upload service--
   // create file--
   async uploadFile(file) {
