@@ -20,8 +20,7 @@ export class Service {
     content,
     featuredImage,
     status,
-    author,
-    authorName,
+
     userId,
   }) {
     try {
@@ -89,9 +88,11 @@ export class Service {
   // all posts-
   async getPosts(queries = [Query.equal("status", "active")]) {
     try {
+      console.log(this.appwriteDatabaseId);
+      console.log(conf.appwriteDatabaseId);
       return await this.databases.listDocuments(
-        this.appwriteDatabaseId,
-        this.appwriteCollectionId,
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
         queries
       );
     } catch (error) {
